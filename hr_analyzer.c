@@ -82,8 +82,11 @@ static inline void hr_analyzer_find_local_max(hr_analyzer_st *hr_analyzer, int32
 			{
 				hr_analyzer->local_max_state = LOCAL_EXTM_FOUND;
 			}
-			break;
 		default:
+			if (new_sample_val > hr_analyzer->local_max_val)
+			{
+				hr_analyzer->local_max_val = new_sample_val;
+			}
 			break;
 	}
 }
@@ -101,8 +104,11 @@ static inline void hr_analyzer_find_local_min(hr_analyzer_st *hr_analyzer, int32
 			{
 				hr_analyzer->local_min_state = LOCAL_EXTM_FOUND;
 			}
-			break;
 		default:
+			if (new_sample_val < hr_analyzer->local_min_val)
+			{
+				hr_analyzer->local_min_val = new_sample_val;
+			}
 			break;
 	}
 }
@@ -112,9 +118,8 @@ static inline bool hr_analyzer_find_beat_threshold_crossing(hr_analyzer_st *hr_a
 	if (hr_analyzer->local_max_state == LOCAL_EXTM_FOUND && 
 		hr_analyzer->local_min_state == LOCAL_EXTM_FOUND)
 	{
-		if (hr_analyzer->beat_threshold == 0)
-			hr_analyzer->beat_threshold = (hr_analyzer->local_max_val + 
-					hr_analyzer->local_min_val) / 2;
+		hr_analyzer->beat_threshold = (hr_analyzer->local_max_val + 
+				hr_analyzer->local_min_val) / 2;
 
 		if (new_sample_val < hr_analyzer->beat_threshold && 
 				hr_analyzer->prev_sample_val >= hr_analyzer->beat_threshold)
