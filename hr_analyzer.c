@@ -1,7 +1,12 @@
+/*
+ * Copyright (c) 2025 Subbotin N.Y. <neymarus@yandex.ru>
+ * GitHub: https://github.com/nktsb
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 #include "hr_analyzer.h"
 
-#define MS_PER_SECOND				1000
-#define SEC_PER_MIN					60
+#define MS_PER_MINUTE				(1000 * 60)
 
 #define HR_MAX_RES_VAL				240.0f
 #define HR_MIN_RES_VAL				40.0f
@@ -113,8 +118,9 @@ static inline bool hr_analyzer_find_beat_threshold_crossing(hr_analyzer_st *hr_a
 
 		if (new_sample_val < hr_analyzer->beat_threshold && 
 				hr_analyzer->prev_sample_val >= hr_analyzer->beat_threshold)
-
-		return true;
+		{
+			return true;
+		}
 	}
 	return false;
 }
@@ -133,7 +139,7 @@ static inline float hr_analyzer_get_hr(hr_analyzer_st *hr_analyzer, uint32_t new
 
 	hr_analyzer->prev_beat_ts = new_beat_ts;
 
-	float calc_heart_rate_val = (float) 1000 * 60 / period_ms; // bpm
+	float calc_heart_rate_val = (float) MS_PER_MINUTE / period_ms; // bpm
 
 	if (calc_heart_rate_val <= hr_analyzer->heart_rate_max_val &&
 			calc_heart_rate_val >= hr_analyzer->heart_rate_min_val)
@@ -142,7 +148,7 @@ static inline float hr_analyzer_get_hr(hr_analyzer_st *hr_analyzer, uint32_t new
 	return hr_analyzer->heart_rate_val;
 }
 
-float hr_analyzer_check_for_beat(hr_analyzer_st *hr_analyzer, int32_t new_sample_val,
+float hr_analyzer_process_sample(hr_analyzer_st *hr_analyzer, int32_t new_sample_val,
 		uint32_t current_time_ms)
 {
 	if (hr_analyzer == NULL) return false;
