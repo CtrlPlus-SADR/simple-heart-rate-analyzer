@@ -28,7 +28,7 @@ typedef enum {
 /**
  * @brief Analyzer instance structure for heart rate detection.
  */
-typedef struct pulsomteter {
+typedef struct hr_analyzer {
     int32_t prev_sample_val;          ///< Previous sample value (used to detect slope changes)
 
     int32_t local_max_val;            ///< Detected local maximum value
