@@ -83,12 +83,11 @@ typedef struct pulsomteter {
 Functions:
 
 ```c
-void hr_analyzer_init(int32_t hysteresis_div);
+void hr_analyzer_init(hr_analyzer_st *hr_analyzer, int32_t hysteresis_div);
 
 bool hr_analyzer_process_sample(hr_analyzer_st *hr_analyzer, float *hr_val, 
         int32_t new_sample_val, uint32_t current_time_ms);
 
-void hr_analyzer_deinit(hr_analyzer_st *analyzer);
 ```
 
 ### 🚀 How to Use
@@ -96,11 +95,12 @@ void hr_analyzer_deinit(hr_analyzer_st *analyzer);
 1. Initialize the Analyzer
 
     ```c
-    hr_analyzer_st *analyzer = hr_analyzer_init(hysteresis_div);
+    hr_analyzer_st analyzer;
+    hr_analyzer_init(&analyzer, hysteresis_div);
     ```
 
     ⚙️ `hysteresis_div`: an integer divisor used in hysteresis calculation. A typical value like 5 works well.
-    Returns a pointer to an initialized analyzer, or NULL on allocation failure.
+    Returns 0, or -1 on init failure.
 
 2. Feed in samples and check for beats
 
@@ -122,14 +122,6 @@ void hr_analyzer_deinit(hr_analyzer_st *analyzer);
     Internally, the function tracks local minima and maxima. Once both are detected, it computes the dynamic threshold and checks for a crossing on the falling edge. When detected, it calculates the BPM from the time difference between beats.
 
     ⚠️ If no beat has been detected for more than 2 seconds, the analyzer resets its internal state, and `*bpm` will be set to HR_ANALYZER_EMPTY.
-
-3. Deinitialize
-
-    ```c
-    hr_analyzer_deinit(analyzer);
-    ```
-
-    🧹 It frees internal memory.
 
 ## 🔬 Tested Hardware
 
