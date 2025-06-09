@@ -50,7 +50,7 @@ typedef struct hr_analyzer {
 } hr_analyzer_st;
 
 /**
- * @brief Initializes a new heart rate analyzer instance.
+ * @brief Initializes a new heart rate analyzer instance. 
  *
  * @param hr_analyzer Pointer to hr_analyzer struct variable.
  * @param hysteresis_div Hysteresis divisor used in amplitude-based thresholding.
