@@ -43,22 +43,22 @@ void hr_analyzer_reset(hr_analyzer_st *hr_analyzer)
 
 int hr_analyzer_init(hr_analyzer_st *hr_analyzer, int32_t hysteresis_div)
 {
-    if (hr_analyzer == NULL) return -1;
+	if (hr_analyzer == NULL) return -1;
 
 	if (hysteresis_div == 0) hysteresis_div = 5;
 
-    memset(hr_analyzer, 0, sizeof(hr_analyzer_st));
+	memset(hr_analyzer, 0, sizeof(hr_analyzer_st));
 
-    hr_analyzer_st hr_analyzer_buf = {
-        .heart_rate_max_val = HR_MAX_RES_VAL,
-        .heart_rate_min_val = HR_MIN_RES_VAL,
-        .hysteresis_div = hysteresis_div
-    };
-    memcpy(hr_analyzer, &hr_analyzer_buf, sizeof(hr_analyzer_st));
+	hr_analyzer_st hr_analyzer_buf = {
+		.heart_rate_max_val = HR_MAX_RES_VAL,
+		.heart_rate_min_val = HR_MIN_RES_VAL,
+		.hysteresis_div = hysteresis_div
+	};
+	memcpy(hr_analyzer, &hr_analyzer_buf, sizeof(hr_analyzer_st));
 
 	hr_analyzer_reset(hr_analyzer);
 
-    return 0;
+	return 0;
 }
 
 static inline void hr_analyzer_find_local_max(hr_analyzer_st *hr_analyzer, 
@@ -89,7 +89,7 @@ static inline void hr_analyzer_find_local_max(hr_analyzer_st *hr_analyzer,
 }
 
 static inline void hr_analyzer_find_local_min(hr_analyzer_st *hr_analyzer, 
-	int32_t new_sample_val)
+		int32_t new_sample_val)
 {
 	switch (hr_analyzer->local_min_state)
 	{
@@ -154,7 +154,7 @@ static inline float hr_analyzer_get_hr(hr_analyzer_st *hr_analyzer,
 }
 
 bool hr_analyzer_process_sample(hr_analyzer_st *hr_analyzer, float *hr_val, 
-        int32_t new_sample_val, uint32_t current_time_ms)
+		int32_t new_sample_val, uint32_t current_time_ms)
 {
 	if (hr_analyzer == NULL)
 	{
